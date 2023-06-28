@@ -1,19 +1,22 @@
 import React from 'react';
 import TodoListItem from './TodoListItem';
-import '../style/TodoList.scss';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
-const TodoList = ({ todos, onRemove, onToggle }) => {
+const StTodoList = styled.div`
+  height: 230px;
+  overflow-y: scroll;
+`;
+
+const TodoList = ({ listCheck }) => {
+  const todosStore = useSelector((state) => state.todos);
+  const todos = todosStore.filter((todo) => todo.checked === listCheck);
   return (
-    <div className="TodoList">
+    <StTodoList>
       {todos.map((todo) => (
-        <TodoListItem
-          todo={todo}
-          key={todo.id}
-          onRemove={onRemove}
-          onToggle={onToggle}
-        />
+        <TodoListItem todo={todo} key={todo.id} />
       ))}
-    </div>
+    </StTodoList>
   );
 };
 
