@@ -21,8 +21,9 @@ export const todosRemove = (id) => {
   return { type: TODOS_DELETE, id };
 };
 
-export const todosUpdate = (id) => {
-  return { type: TODOS_UPDATE, id };
+export const todosUpdate = (title, content, id) => {
+  console.log(title, content, id);
+  return { type: TODOS_UPDATE, title, content, id };
 };
 
 export const todosChecked = (id) => {
@@ -57,12 +58,15 @@ const todos = (state = initialState, action) => {
     case TODOS_DELETE:
       return state.filter((todo) => todo.id !== action.id);
     case TODOS_UPDATE:
-      return {};
+      return state.map((todo) =>
+        todo.id === action.id
+          ? { ...todo, title: action.title, content: action.content }
+          : todo,
+      );
     case TODOS_CHECKED:
       return state.map((todo) =>
         todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
       );
-
     default:
       return state;
   }

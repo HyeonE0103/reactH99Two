@@ -2,51 +2,28 @@ import React, { useCallback, useState } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { todosInsert } from '../redux/modules/todos';
-import styled from 'styled-components';
-
-const StTodoInsert = styled.form`
-  display: flex;
-  background: #495057;
-  input {
-    background: none;
-    outline: none;
-    border: none;
-    border-right: #868e96 1px solid;
-    padding: 0.5rem;
-    font-size: 1.125rem;
-    line-height: 1.5;
-    color: white;
-    &::placeholder {
-      color: #dee2e6;
-    }
-  }
-  button {
-    width: 100%;
-    outline: none;
-    border: none;
-    background: #868e96;
-    color: white;
-    font-size: 1.5rem;
-    align-items: center;
-    cursor: pointer;
-    transition: 0.1s background ease-in;
-    &:hover {
-      background: #adb5bd;
-    }
-  }
-`;
+import StTodoInsert from '../style/StTodoInsrt';
 
 const TodoInsert = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
   const dispatch = useDispatch();
 
   const onChangeTitle = useCallback((e) => {
-    setTitle(e.target.value);
+    if (e.target.value.length > 20) {
+      alert('제목은 20자 이내입니다');
+      setTitle(e.target.value.slice(0, 20));
+    } else {
+      setTitle(e.target.value);
+    }
   }, []);
   const onChangeContent = useCallback((e) => {
-    setContent(e.target.value);
+    if (e.target.value.length > 600) {
+      alert('본문은 600자 이내입니다');
+      setTitle(e.target.value.slice(0, 601));
+    } else {
+      setContent(e.target.value);
+    }
   }, []);
 
   const onSubmit = useCallback(
@@ -59,6 +36,8 @@ const TodoInsert = () => {
         dispatch(todosInsert({ title, content }));
         setTitle('');
         setContent('');
+      } else {
+        alert('글을 입력해주세요');
       }
       //새로고침 방지
       e.preventDefault();
@@ -67,8 +46,18 @@ const TodoInsert = () => {
   );
   return (
     <StTodoInsert onSubmit={onSubmit}>
-      <input placeholder="제목" value={title} onChange={onChangeTitle} />
-      <input placeholder="내용" value={content} onChange={onChangeContent} />
+      <input
+        placeholder="제목"
+        value={title}
+        onChange={onChangeTitle}
+        maxLength={21}
+      />
+      <input
+        placeholder="내용"
+        value={content}
+        onChange={onChangeContent}
+        maxLength={601}
+      />
       <button type="submit">
         <MdAdd />
       </button>

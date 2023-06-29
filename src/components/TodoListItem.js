@@ -3,72 +3,32 @@ import { MdDone, MdClear, MdOutlineReplay } from 'react-icons/md';
 import cn from '../../node_modules/classnames/index';
 import { useDispatch } from 'react-redux';
 import { todosRemove, todosChecked } from '../redux/modules/todos';
-import styled from 'styled-components';
-
-const StTodoListItem = styled.div`
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #dee2e6;
-
-  &:nth-child(even) {
-    background: #f8f9fa;
-  }
-
-  .text {
-    flex: 10;
-
-    &.checked {
-      color: #adb5bd;
-      text-decoration: line-through;
-    }
-  }
-
-  .checkbox {
-    height: 100%;
-    cursor: pointer;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: green;
-
-    svg {
-      font-size: 1.5rem;
-    }
-
-    &.checked {
-      color: blue;
-    }
-
-    &.remove {
-      color: red;
-    }
-
-    &.check .checked {
-      svg {
-        color: #22b8cf;
-      }
-    }
-  }
-
-  // 엘리먼트 사이사이에 테두리를 넣어줌
-  // & + & {
-  // border-top: 1px solid #dee2e6;
-  // }
-`;
+import { modalFalse, modalTrue } from '../redux/modules/ModalChecked';
+import StTodoListItem from '../style/StTodoListItem';
 
 const TodoListItem = ({ todo }) => {
   const { title, content, checked, id } = todo;
   const dispatch = useDispatch();
-  const onRemove = useCallback((id) => dispatch(todosRemove(id)), []);
-  const onChecked = useCallback((id) => dispatch(todosChecked(id)), []);
+  const onRemove = useCallback((id) => dispatch(todosRemove(id)), [dispatch]);
+  const onChecked = useCallback((id) => dispatch(todosChecked(id)), [dispatch]);
+  const onModalChecked = useCallback(
+    (todo) => dispatch(modalTrue(todo)),
+    [dispatch],
+  );
+
   return (
     <>
       <StTodoListItem>
-        <div className={cn('text', { checked })}>
+        <div
+          className={cn('text', { checked })}
+          onClick={() => onModalChecked(todo)}
+        >
           <div>{title}</div>
-          <div>{content}</div>
+          <div>
+            {content.length < 20
+              ? content
+              : content.slice(0, 22).padEnd(25, '.')}
+          </div>
         </div>
         <div
           className={cn('checkbox', { checked })}
@@ -76,7 +36,13 @@ const TodoListItem = ({ todo }) => {
         >
           {checked ? <MdOutlineReplay /> : <MdDone />}
         </div>
-        <div className="checkbox remove" onClick={() => onRemove(id)}>
+        <div
+          className="checkbox remove"
+          onClick={() => {
+            onRemove(id);
+            dispatch(modalFalse());
+          }}
+        >
           <MdClear />
         </div>
       </StTodoListItem>
