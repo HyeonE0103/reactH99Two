@@ -4,26 +4,23 @@ import { MdClear } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
 import { todosUpdate } from '../redux/modules/todos';
 import { modalFalse } from '../redux/modules/ModalChecked';
+import useInput from '../hooks/useInput';
 
 function Modal() {
   const dispatch = useDispatch();
   const todo = useSelector((state) => state.ModalChecked.todo);
   const { title, content, id } = todo;
   const [okay, setOkay] = useState(false);
-  const [inputTitle, setInputTitle] = useState('');
-  const [inputcontent, setInputContent] = useState('');
+  const [{ inputTitle, inputcontent }, setForm, onChange] = useInput({
+    inputTitle: title,
+    inputcontent: content,
+  });
 
   useEffect(() => {
-    setInputTitle(title);
-    setInputContent(content);
-  }, [title, content]);
+    setForm({ inputTitle: title, inputcontent: content });
+    setOkay(false);
+  }, [title, content, setForm]);
 
-  const onChangeTitle = (e) => {
-    setInputTitle(e.target.value);
-  };
-  const onChangeContent = (e) => {
-    setInputContent(e.target.value);
-  };
   const onChangeOkey = () => {
     okay && dispatch(todosUpdate(inputTitle, inputcontent, id));
     setOkay(!okay);
@@ -43,14 +40,16 @@ function Modal() {
         <div className="body">
           <input
             type="text"
+            name="inputTitle"
             value={inputTitle}
-            onChange={onChangeTitle}
+            onChange={onChange}
             maxLength={20}
           />
           <textarea
             type="text"
+            name="inputcontent"
             value={inputcontent}
-            onChange={onChangeContent}
+            onChange={onChange}
             maxLength={600}
           />
           <div> {inputcontent.length}/600 </div>
