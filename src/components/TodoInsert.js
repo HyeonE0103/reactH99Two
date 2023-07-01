@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { MdAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { todosInsert } from '../redux/modules/todos';

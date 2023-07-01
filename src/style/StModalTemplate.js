@@ -74,9 +74,11 @@ const ModalTemplate = styled.div`
       font-size: 20px;
       box-sizing: border-box;
       border-bottom: 1px solid grey;
+      /* word-break: break-all; */
     }
 
     h3 {
+      display: block;
       line-height: 1.45;
       width: 100%;
       height: 80%;
@@ -86,7 +88,9 @@ const ModalTemplate = styled.div`
       box-sizing: border-box;
       font-size: 0.83rem;
       background: transparent;
+      overflow-y: scroll;
       overflow-wrap: break-word;
+      word-break: break-all;
     }
   }
   footer {

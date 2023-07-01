@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { MdDone, MdClear, MdOutlineReplay } from 'react-icons/md';
 import cn from '../../node_modules/classnames/index';
 import { useDispatch } from 'react-redux';
@@ -9,12 +9,9 @@ import StTodoListItem from '../style/StTodoListItem';
 const TodoListItem = ({ todo }) => {
   const { title, content, checked, id } = todo;
   const dispatch = useDispatch();
-  const onRemove = useCallback((id) => dispatch(todosRemove(id)), [dispatch]);
-  const onChecked = useCallback((id) => dispatch(todosChecked(id)), [dispatch]);
-  const onModalChecked = useCallback(
-    (todo) => dispatch(modalTrue(todo)),
-    [dispatch],
-  );
+  const onRemove = (id) => dispatch(todosRemove(id));
+  const onChecked = (id) => dispatch(todosChecked(id));
+  const onModalChecked = (todo) => dispatch(modalTrue(todo));
 
   return (
     <>

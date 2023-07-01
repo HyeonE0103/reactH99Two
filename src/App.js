@@ -15,16 +15,12 @@ const TodoWrap = styled.div`
 
 function App() {
   const modalCheck = useSelector((state) => state.ModalChecked.Checked);
-  const todoss = useSelector((state) => state.todos);
-  console.log(todoss);
   return (
     <TodoWrap>
       <TodoTemplate>
         <GlobalStyle />
         <TodoInsert />
-        <div className="Tag">할일</div>
         <TodoList listCheck={false} />
-        <div className="Tag">완료</div>
         <TodoList listCheck={true} />
       </TodoTemplate>
       {modalCheck === true ? <Modal /> : null}

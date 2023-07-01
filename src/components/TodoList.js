@@ -8,15 +8,33 @@ const StTodoList = styled.div`
   overflow-y: scroll;
 `;
 
+const Tag = styled.div`
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  background: #bdbdbd;
+  display: flex;
+  justify-content: space-between;
+  p:last-child {
+    font-size: 1rem;
+    color: #495057;
+  }
+`;
+
 const TodoList = ({ listCheck }) => {
   const todosStore = useSelector((state) => state.todos);
   const todos = todosStore.filter((todo) => todo.checked === listCheck);
   return (
-    <StTodoList>
-      {todos.map((todo) => (
-        <TodoListItem todo={todo} key={todo.id} />
-      ))}
-    </StTodoList>
+    <>
+      <Tag>
+        <p>{listCheck ? '완료' : '할일'}</p>
+        <p>count: {todos.length}</p>
+      </Tag>
+      <StTodoList>
+        {todos.map((todo) => (
+          <TodoListItem todo={todo} key={todo.id} />
+        ))}
+      </StTodoList>
+    </>
   );
 };
 
