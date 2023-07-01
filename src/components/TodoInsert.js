@@ -1,62 +1,56 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { MdAdd } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { todosInsert } from '../redux/modules/todos';
 import StTodoInsert from '../style/StTodoInsrt';
+import useInput from '../hooks/useInput';
 
 const TodoInsert = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const dispatch = useDispatch();
+  const [{ title, content }, setForm, onChange] = useInput({
+    title: '',
+    content: '',
+  });
 
-  const onChangeTitle = useCallback((e) => {
-    if (e.target.value.length > 20) {
-      alert('제목은 20자 이내입니다');
-      setTitle(e.target.value.slice(0, 20));
-    } else {
-      setTitle(e.target.value);
+  const onChangeNum = (e, num) => {
+    if (e.target.value.length > num) {
+      alert(`${num}자 이내입니다`);
     }
-  }, []);
-  const onChangeContent = useCallback((e) => {
-    if (e.target.value.length > 600) {
-      alert('본문은 600자 이내입니다');
-      setTitle(e.target.value.slice(0, 601));
-    } else {
-      setContent(e.target.value);
-    }
-  }, []);
+    onChange(e);
+  };
 
-  const onSubmit = useCallback(
-    (e) => {
-      let blank_pattern = /^\s+|\s+$/g;
-      if (
-        title.replace(blank_pattern, '') &&
-        content.replace(blank_pattern, '')
-      ) {
-        dispatch(todosInsert({ title, content }));
-        setTitle('');
-        setContent('');
-      } else {
-        alert('글을 입력해주세요');
-      }
-      //새로고침 방지
-      e.preventDefault();
-    },
-    [title, content],
-  );
+  const onSubmit = (e) => {
+    let blank_pattern = /^\s+|\s+$/g;
+    if (
+      title.replace(blank_pattern, '') &&
+      content.replace(blank_pattern, '')
+    ) {
+      dispatch(todosInsert({ title, content }));
+      setForm({
+        title: '',
+        content: '',
+      });
+    } else {
+      alert('글을 입력해주세요');
+    }
+    //새로고침 방지
+    e.preventDefault();
+  };
   return (
     <StTodoInsert onSubmit={onSubmit}>
       <input
         placeholder="제목"
+        name="title"
         value={title}
-        onChange={onChangeTitle}
-        maxLength={21}
+        onChange={(e) => onChangeNum(e, 20)}
+        maxLength={20}
       />
       <input
         placeholder="내용"
+        name="content"
         value={content}
-        onChange={onChangeContent}
-        maxLength={601}
+        onChange={(e) => onChangeNum(e, 600)}
+        maxLength={600}
       />
       <button type="submit">
         <MdAdd />
