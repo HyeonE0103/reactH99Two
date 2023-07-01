@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { todosUpdate } from '../redux/modules/todos';
 import { modalFalse } from '../redux/modules/ModalChecked';
 import useInput from '../hooks/useInput';
+import validation from '../hooks/validation';
 
 function Modal() {
   const dispatch = useDispatch();
@@ -22,8 +23,12 @@ function Modal() {
   }, [title, content, setForm]);
 
   const onChangeOkey = () => {
-    okay && dispatch(todosUpdate(inputTitle, inputcontent, id));
-    setOkay(!okay);
+    if (validation(inputTitle, inputcontent)) {
+      okay && dispatch(todosUpdate(inputTitle, inputcontent, id));
+      setOkay(!okay);
+    } else {
+      alert('글을 입력해주세요');
+    }
   };
   const modalDelete = () => {
     dispatch(modalFalse());
@@ -38,13 +43,16 @@ function Modal() {
       </header>
       {okay === true ? (
         <div className="body">
-          <input
-            type="text"
-            name="inputTitle"
-            value={inputTitle}
-            onChange={onChange}
-            maxLength={20}
-          />
+          <div>
+            <input
+              type="text"
+              name="inputTitle"
+              value={inputTitle}
+              onChange={onChange}
+              maxLength={20}
+            />
+            <p>{inputTitle.length}/20</p>
+          </div>
           <textarea
             type="text"
             name="inputcontent"
@@ -52,7 +60,7 @@ function Modal() {
             onChange={onChange}
             maxLength={600}
           />
-          <div> {inputcontent.length}/600 </div>
+          <p> {inputcontent.length}/600 </p>
         </div>
       ) : (
         <div className="body">

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { todosInsert } from '../redux/modules/todos';
 import StTodoInsert from '../style/StTodoInsrt';
 import useInput from '../hooks/useInput';
-
+import validation from '../hooks/validation';
 const TodoInsert = () => {
   const dispatch = useDispatch();
   const [{ title, content }, setForm, onChange] = useInput({
@@ -20,11 +20,7 @@ const TodoInsert = () => {
   };
 
   const onSubmit = (e) => {
-    let blank_pattern = /^\s+|\s+$/g;
-    if (
-      title.replace(blank_pattern, '') &&
-      content.replace(blank_pattern, '')
-    ) {
+    if (validation(title, content)) {
       dispatch(todosInsert({ title, content }));
       setForm({
         title: '',

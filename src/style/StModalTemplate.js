@@ -30,17 +30,22 @@ const ModalTemplate = styled.div`
     flex-direction: column;
     width: 100%;
     background: #e9ecef;
-
-    input {
-      padding: 15px 10px 0px 10px;
-      width: 100%;
-      padding-left: 10px;
-      border: none;
-      background-color: transparent;
-      font-size: 20px;
-      box-sizing: border-box;
-      &:focus {
-        outline: none;
+    div {
+      display: flex;
+      padding-top: 11px;
+      padding: 12px 10px 16px 8px;
+      input {
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        font-size: 20px;
+        box-sizing: border-box;
+        &:focus {
+          outline: none;
+        }
+        p {
+          display: inline;
+        }
       }
     }
     textarea {
@@ -53,17 +58,19 @@ const ModalTemplate = styled.div`
       background: transparent;
       white-space: pre-wrap;
       word-break: break-all;
+      box-sizing: border-box;
+      /* margin-top: 18px; */
 
       &:focus {
         outline: none;
       }
-      box-sizing: border-box;
-      margin-top: 20px;
     }
-    div {
+    p {
+      display: block;
       box-sizing: border-box;
       float: right;
       padding: 10px;
+      display: flex;
     }
 
     h1 {
@@ -105,6 +112,9 @@ const ModalTemplate = styled.div`
       border-radius: 10px;
       font-size: 1rem;
       cursor: pointer;
+      &:hover {
+        font-size: 1.1rem;
+      }
     }
   }
 `;
